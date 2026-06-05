@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>ALGO LIVE REWARDS | Real-Time Algorand Transaction Rewards</title>
+  <!-- Tailwind CSS + Google Fonts + Font Awesome + AOS + Chart.js -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    * { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+    body { background: #0A0A0F; overflow-x: hidden; }
+    /* glassmorphism core */
+    .glass-panel {
+      background: rgba(12, 18, 32, 0.55);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 212, 255, 0.25);
+      border-radius: 1.8rem;
+      transition: all 0.25s ease;
+    }
+    .glass-panel:hover {
+      border-color: #00D4FF;
+      box-shadow: 0 8px 28px rgba(0, 212, 255, 0.15);
+    }
+    .card-hover {
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      border-color: #7C3AED;
+    }
+    .neon-btn {
+      background: linear-gradient(95deg, #00D4FF, #7C3AED);
+      box-shadow: 0 0 12px #00D4FF66;
+      transition: all 0.2s;
+    }
+    .neon-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 22px #00D4FFCC;
+    }
+    .outline-glow {
+      border: 1px solid rgba(0, 212, 255, 0.6);
+      background: rgba(0, 212, 255, 0.05);
+    }
+    .outline-glow:hover {
+      background: rgba(0, 212, 255, 0.15);
+      box-shadow: 0 0 8px #00D4FF;
+    }
+    .blob-bg {
+      position: fixed;
+      width: 70vw;
+      height: 70vw;
+      background: radial-gradient(circle, rgba(0,212,255,0.12), transparent);
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .floating-node {
+      animation: floatNode 6s infinite alternate ease-in-out;
+    }
+    @keyframes floatNode {
+      0% { transform: translateY(0px) translateX(0px); opacity: 0.3; }
+      100% { transform: translateY(-20px) translateX(25px); opacity: 0.8; }
+    }
+    .transaction-row {
+      transition: background 0.2s, transform 0.1s;
+    }
+    .transaction-row:hover {
+      background: rgba(0, 212, 255, 0.1);
+    }
+    .scroll-feed {
+      scrollbar-width: thin;
+      scrollbar-color: #00D4FF #1E293B;
+    }
+    .scroll-feed::-webkit-scrollbar {
+      width: 5px;
+    }
+    .scroll-feed::-webkit-scrollbar-track { background: #1E293B; border-radius: 10px; }
+    .scroll-feed::-webkit-scrollbar-thumb { background: #00D4FF; border-radius: 10px; }
+    .counter-value {
+      font-variant-numeric: tabular-nums;
+    }
+    .pulse-green {
+      animation: pulseGreen 1.5s infinite;
+    }
+    @keyframes pulseGreen {
+      0% { box-shadow: 0 0 0 0 rgba(0, 255, 163, 0.4); }
+      70% { box-shadow: 0 0 0 8px rgba(0, 255, 163, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(0, 255, 163, 0); }
+    }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .faq-item.active .faq-answer { max-height: 220px; }
+    .faq-question { cursor: pointer; }
+  </style>
+</head>
+<body class="text-gray-200">
+
+<!-- Animated Blockchain Background -->
+<div class="blob-bg top-[-20%] left-[-20%]"></div>
+<div class="blob-bg bottom-[-20%] right-[-15%]" style="background: radial-gradient(circle, rgba(124,58,237,0.12), transparent);"></div>
+<div class="fixed inset-0 pointer-events-none z-0">
+  <div class="absolute top-20 left-[10%] w-2 h-2 bg-cyan-400 rounded-full floating-node"></div>
+  <div class="absolute bottom-40 right-[15%] w-3 h-3 bg-purple-500 rounded-full floating-node" style="animation-delay: 1s;"></div>
+  <div class="absolute top-[40%] right-[30%] w-1.5 h-1.5 bg-green-400 rounded-full floating-node" style="animation-duration: 8s;"></div>
+  <div class="absolute bottom-[30%] left-[20%] w-2 h-2 bg-cyan-300 rounded-full floating-node" style="animation-duration: 7s;"></div>
+</div>
+
+<main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+
+  <!-- Hero Section -->
+  <section class="mb-20 pt-6" data-aos="fade-up">
+    <div class="glass-panel p-6 md:p-10 rounded-3xl text-center">
+      <div class="inline-flex items-center gap-2 bg-black/30 px-4 py-2 rounded-full border border-cyan-500/40 mb-4">
+        <i class="fab fa-algolia text-cyan-400 text-xl floating-node"></i>
+        <span class="text-xs font-mono tracking-wider">ALGORAND ECOSYSTEM • LIVE REWARDS</span>
+      </div>
+      <h1 class="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-400 bg-clip-text text-transparent">Live Algorand Transaction Rewards</h1>
+      <p class="text-gray-300 text-lg max-w-2xl mx-auto mt-5">Monitor network activity, participate in community campaigns, and earn token rewards in real time.</p>
+      <div class="flex flex-wrap justify-center gap-5 mt-8">
+        <button id="heroConnectBtn" class="neon-btn px-8 py-4 rounded-full font-bold text-white"><i class="fas fa-wallet mr-2"></i> Connect Wallet</button>
+        <button id="heroEarnBtn" class="outline-glow px-8 py-4 rounded-full font-semibold"><i class="fas fa-chart-line mr-2"></i> Start Earning</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Transaction Feed Panel -->
+  <section class="mb-20" data-aos="fade-up" data-aos-delay="100">
+    <h2 class="text-3xl font-bold mb-6 flex items-center gap-3"><i class="fas fa-exchange-alt text-cyan-400"></i> Live Transaction Feed <span class="text-xs bg-cyan-900/50 px-2 py-1 rounded-full border border-cyan-400">real-time</span></h2>
+    <div class="glass-panel p-5">
+      <div class="overflow-x-auto">
+        <div class="max-h-80 overflow-y-auto scroll-feed">
+          <table class="w-full text-sm">
+            <thead class="text-gray-400 border-b border-white/10 sticky top-0 bg-[#0A0A0F]/80 backdrop-blur"><tr><th class="text-left p-3">Wallet</th><th class="text-left p-3">Tx Hash</th><th class="text-left p-3">Amount (ALGO)</th><th class="text-left p-3">Status</th><th class="text-left p-3">Time</th></tr></thead>
+            <tbody id="transactionFeedBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="mt-3 text-right text-xs text-gray-500"><i class="fas fa-sync-alt fa-fw"></i> auto-updating every 4s</div>
+    </div>
+  </section>
+
+  <!-- Dashboard Analytics Cards -->
+  <section class="mb-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" data-aos="zoom-in">
+    <div class="glass-panel p-5"><i class="fas fa-chart-line text-3xl text-cyan-400"></i><p class="text-gray-400 text-sm mt-2">Total Transactions</p><p id="totalTxCount" class="text-3xl font-bold counter-value">0</p></div>
+    <div class="glass-panel p-5"><i class="fas fa-users text-3xl text-purple-400"></i><p class="text-gray-400 text-sm mt-2">Active Participants</p><p id="activeParticipantsCount" class="text-3xl font-bold counter-value">1,284</p></div>
+    <div class="glass-panel p-5"><i class="fas fa-gift text-3xl text-green-400"></i><p class="text-gray-400 text-sm mt-2">Total Rewards Distributed</p><p id="totalRewardsCount" class="text-3xl font-bold counter-value">48,250 ALGO</p></div>
+    <div class="glass-panel p-5"><i class="fas fa-microchip text-3xl text-cyan-300"></i><p class="text-gray-400 text-sm mt-2">Network Activity Score</p><p id="networkScore" class="text-3xl font-bold">92<span class="text-base">/100</span></p></div>
+  </section>
+
+  <!-- Wallet Section & Live Activity combined -->
+  <section class="mb-20 grid lg:grid-cols-2 gap-8" data-aos="fade-right">
+    <!-- Wallet Card -->
+    <div class="glass-panel p-6">
+      <h3 class="text-2xl font-bold mb-4"><i class="fas fa-link text-cyan-400 mr-2"></i> Wallet Integration</h3>
+      <div class="space-y-3"><button id="walletConnectBtn" class="neon-btn w-full py-3 rounded-xl font-bold">Connect Wallet</button>
+        <div class="flex gap-2 justify-center text-xs text-gray-400"><span class="border border-white/20 px-2 py-1 rounded"><i class="fab fa-algolia"></i> Pera Wallet</span><span class="border border-white/20 px-2 py-1 rounded"><i class="fas fa-wallet"></i> Defly</span><span class="border border-white/20 px-2 py-1 rounded"><i class="fas fa-link"></i> WalletConnect</span></div>
+        <div class="bg-black/30 rounded-xl p-3 mt-3"><p class="text-xs text-gray-400">Status:</p><p id="walletStatusText" class="font-mono text-cyan-300 text-sm"><i class="fas fa-circle-notch fa-spin"></i> Not connected</p><p class="text-xs text-gray-400 mt-2">Address:</p><p id="walletAddressDisplay" class="font-mono text-xs break-all">---</p><p class="text-xs text-gray-400 mt-2">Balance:</p><p id="walletBalanceValue" class="text-sm font-bold">0.00 ALGO</p></div>
+      </div>
+    </div>
+    <!-- Live Activity Stats -->
+    <div class="glass-panel p-6">
+      <h3 class="text-xl font-bold mb-3"><i class="fas fa-bolt text-yellow-400"></i> Live Activity Metrics</h3>
+      <div class="grid grid-cols-2 gap-4">
+        <div><p class="text-gray-400 text-xs">Recent Claims (24h)</p><p id="recentClaims" class="text-2xl font-bold text-green-300">142</p></div>
+        <div><p class="text-gray-400 text-xs">Top Participant</p><p id="topParticipant" class="text-md font-mono text-cyan-300 truncate">ALGO...d92k</p></div>
+        <div><p class="text-gray-400 text-xs">Reward Pool Status</p><p id="rewardPoolStatus" class="text-lg font-bold text-cyan-400">342,500 ALGO</p></div>
+        <div><p class="text-gray-400 text-xs">TPS (avg)</p><p id="tpsValue" class="text-xl font-bold">6.4 tps</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rewards Campaign Section -->
+  <section class="mb-20" data-aos="fade-up">
+    <h2 class="text-3xl font-bold mb-8 text-center">🎁 Reward Campaigns</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div class="glass-panel p-5 text-center card-hover"><i class="fas fa-calendar-day text-3xl text-cyan-400"></i><h3 class="text-xl font-bold mt-2">Daily Activity Rewards</h3><p class="text-green-300 font-bold">Up to 25 ALGO/day</p></div>
+      <div class="glass-panel p-5 text-center card-hover"><i class="fas fa-trophy text-3xl text-yellow-400"></i><h3 class="text-xl font-bold mt-2">Weekly Campaign Rewards</h3><p class="text-green-300 font-bold">+150 ALGO bonus</p></div>
+      <div class="glass-panel p-5 text-center card-hover"><i class="fas fa-users text-3xl text-purple-400"></i><h3 class="text-xl font-bold mt-2">Referral Rewards</h3><p class="text-green-300 font-bold">30 ALGO each</p></div>
+      <div class="glass-panel p-5 text-center card-hover"><i class="fas fa-gem text-3xl text-pink-400"></i><h3 class="text-xl font-bold mt-2">Community Bonus</h3><p class="text-green-300 font-bold">Random draws weekly</p></div>
+    </div>
+  </section>
+
+  <!-- How It Works + Timeline -->
+  <section class="mb-20 grid md:grid-cols-2 gap-8 items-center" data-aos="fade-right">
+    <div><h2 class="text-3xl font-bold">How It Works</h2><p class="text-gray-400 mt-2">Earn rewards by engaging with live Algorand activity</p>
+      <div class="mt-6 space-y-5"><div class="flex gap-4"><div class="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-300 font-bold border border-cyan-400">1</div><div><h3 class="font-bold">Connect Wallet</h3><p class="text-sm text-gray-400">Secure Pera/Defly wallet connection</p></div></div>
+      <div class="flex gap-4"><div class="w-10 h-10 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-300 font-bold border border-purple-400">2</div><div><h3 class="font-bold">Monitor Live Transactions</h3><p class="text-sm text-gray-400">View real-time network activity</p></div></div>
+      <div class="flex gap-4"><div class="w-10 h-10 rounded-full bg-cyan-500/20 flex items-center justify-center text-cyan-300 font-bold border border-cyan-400">3</div><div><h3 class="font-bold">Participate in Campaign Activities</h3><p class="text-sm text-gray-400">Daily tasks & referral missions</p></div></div>
+      <div class="flex gap-4"><div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-300 font-bold border border-green-400">4</div><div><h3 class="font-bold">Receive Rewards</h3><p class="text-sm text-gray-400">Automatic ALGO distribution</p></div></div>
+    </div></div>
+    <div class="glass-panel p-5"><canvas id="activityChart" height="200"></canvas><p class="text-center text-xs text-gray-400 mt-2">Network Activity (last 7 days)</p></div>
+  </section>
+
+  <!-- Network Statistics & Roadmap -->
+  <section class="mb-20 grid lg:grid-cols-2 gap-8" data-aos="fade-up">
+    <div class="glass-panel p-6"><h3 class="text-xl font-bold mb-4"><i class="fas fa-chart-simple"></i> Network Statistics</h3>
+      <div class="grid grid-cols-2 gap-4"><div><p class="text-gray-400 text-xs">Transactions Per Second</p><p id="statTps" class="text-2xl font-bold">6.42</p></div><div><p class="text-gray-400 text-xs">Active Wallets</p><p id="statActiveWallets" class="text-2xl font-bold">18,942</p></div><div><p class="text-gray-400 text-xs">Total Transactions</p><p id="statTotalTx" class="text-2xl font-bold">2,841,300</p></div><div><p class="text-gray-400 text-xs">Reward Pool Balance</p><p id="statRewardPool" class="text-2xl font-bold text-cyan-300">342,500 ALGO</p></div></div>
+    </div>
+    <div class="glass-panel p-6"><h3 class="text-xl font-bold mb-4">🗺️ Roadmap</h3><div class="grid grid-cols-2 gap-3 text-sm"><div><i class="fas fa-check-circle text-green-400"></i> Phase 1: Platform Launch</div><div><i class="fas fa-chart-line text-cyan-400"></i> Phase 2: Live Transaction Monitor</div><div><i class="fas fa-robot text-purple-400"></i> Phase 3: Reward Automation</div><div><i class="fas fa-globe text-blue-400"></i> Phase 4: Community Expansion</div><div><i class="fas fa-chart-pie text-yellow-400"></i> Phase 5: Advanced Analytics</div></div></div>
+  </section>
+
+  <!-- Community Section -->
+  <section class="mb-20" data-aos="fade-up">
+    <h2 class="text-3xl font-bold text-center mb-8">🌍 Join The Ecosystem</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
+      <a href="#" class="glass-panel p-5 text-center transition hover:bg-cyan-900/20"><i class="fab fa-telegram text-4xl text-blue-400"></i><p class="mt-2">Telegram</p></a>
+      <a href="#" class="glass-panel p-5 text-center transition hover:bg-indigo-900/20"><i class="fab fa-discord text-4xl text-indigo-400"></i><p>Discord</p></a>
+      <a href="#" class="glass-panel p-5 text-center transition"><i class="fab fa-twitter text-4xl text-sky-400"></i><p>X (Twitter)</p></a>
+      <a href="#" class="glass-panel p-5 text-center transition"><i class="fab fa-github text-4xl text-gray-300"></i><p>GitHub</p></a>
+    </div>
+  </section>
+
+  <!-- FAQ Accordion -->
+  <section class="mb-20 max-w-4xl mx-auto" data-aos="fade-up">
+    <h2 class="text-3xl font-bold text-center mb-8">FAQ</h2>
+    <div class="space-y-4">
+      <div class="glass-panel p-0 overflow-hidden faq-item"><div class="faq-question flex justify-between p-5 font-bold"><span>How are rewards calculated?</span><i class="fas fa-chevron-down text-cyan-400"></i></div><div class="faq-answer px-5 pb-5 text-gray-300">Based on transaction activity, participation in campaigns & community engagement. Real-time tracking ensures fairness.</div></div>
+      <div class="glass-panel p-0 overflow-hidden faq-item"><div class="faq-question flex justify-between p-5 font-bold"><span>Which wallets are supported?</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer px-5 pb-5 text-gray-300">Pera Wallet, Defly, and WalletConnect (Algorand ecosystem).</div></div>
+      <div class="glass-panel p-0 overflow-hidden faq-item"><div class="faq-question flex justify-between p-5 font-bold"><span>How often is data updated?</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer px-5 pb-5 text-gray-300">Transaction feed updates every 4 seconds with live-simulated Algorand activity.</div></div>
+      <div class="glass-panel p-0 overflow-hidden faq-item"><div class="faq-question flex justify-between p-5 font-bold"><span>When are rewards distributed?</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer px-5 pb-5 text-gray-300">Rewards are sent daily at 00:00 UTC to connected wallets.</div></div>
+      <div class="glass-panel p-0 overflow-hidden faq-item"><div class="faq-question flex justify-between p-5 font-bold"><span>Is participation free?</span><i class="fas fa-chevron-down"></i></div><div class="faq-answer px-5 pb-5 text-gray-300">Absolutely free. No hidden fees – just community rewards.</div></div>
+    </div>
+  </section>
+
+  <!-- Security Notice -->
+  <div class="glass-panel p-4 text-center max-w-3xl mx-auto border-amber-500/50 mb-12 bg-amber-900/20"><i class="fas fa-shield-alt text-amber-400"></i> <span class="font-bold">Security Notice:</span> Never share your private key, seed phrase, or recovery phrase. Wallet connections must use secure blockchain signing only.</div>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/10 pt-8 pb-6 text-gray-400 text-sm flex flex-wrap justify-between gap-5 max-w-6xl mx-auto"><div>© 2026 ALGO LIVE REWARDS — Real-Time Algorand Rewards</div><div class="flex gap-6"><a href="#" class="hover:text-cyan-300">Privacy</a><a href="#" class="hover:text-cyan-300">Terms</a><a href="#" class="hover:text-cyan-300"><i class="fab fa-twitter"></i></a><a href="#" class="hover:text-cyan-300"><i class="fab fa-telegram"></i></a><span>hello@algoliverewards.io</span></div></footer>
+</main>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({ duration: 700, once: true });
+
+  // ----------------------------------- Simulated Live Transaction Feed & State -----------------------------------
+  const transactionFeed = document.getElementById('transactionFeedBody');
+  const totalTxSpan = document.getElementById('totalTxCount');
+  let totalTransactions = 2841300;
+  let activeParticipants = 1284;
+  let totalRewards = 48250;
+  let rewardPool = 342500;
+  let tps = 6.42;
+  let recentClaims = 142;
+
+  function formatAddress(addr) { return addr.substring(0,6)+'...'+addr.substring(addr.length-4); }
+  const sampleWallets = ['AGRO4JK...H92M','ALGO7FGT...LP02','LGAO2RTE...A81K','OPGO9UJY...M9Q3','SDGO0PLK...T5VX','GRGO8HGF...D3SW'];
+  const updateFeed = () => {
+    const newTx = { wallet: sampleWallets[Math.floor(Math.random()*sampleWallets.length)], hash: '0x'+Math.random().toString(36).substring(2,10), amount: (Math.random()*3500+2).toFixed(2), status: 'confirmed', time: new Date().toLocaleTimeString() };
+    const row = document.createElement('tr');
+    row.className = 'transaction-row border-b border-white/5';
+    row.innerHTML = `<td class="p-2 font-mono text-xs">${newTx.wallet}</td><td class="p-2 font-mono text-xs text-cyan-3000">${newTx.hash}</td><td class="p-2 text-green-3000">${newTx.amount}</td><td class="p-2"><span class="bg-green-900/40 text-green-300 px-2 py-0.5 rounded-full text-xs">✓ ${newTx.status}</span></td><td class="p-2 text-gray-400 text-xs">${newTx.time}</td>`;
+    transactionFeed.prepend(row);
+    if(transactionFeed.children.length > 12) transactionFeed.removeChild(transactionFeed.lastChild);
+    totalTransactions += 1;
+    totalTxSpan.innerText = totalTransactions.toLocaleString();
+    document.getElementById('statTotalTx').innerText = totalTransactions.toLocaleString();
+    tps = (Math.random() * 3 + 5.5).toFixed(2);
+    document.getElementById('tpsValue').innerText = tps + " tps";
+    document.getElementById('statTps').innerText = tps;
+    document.getElementById('statActiveWallets').innerText = (1800000 + Math.floor(Math.random() * 120000)).toLocaleString();
+    document.getElementById('statRewardPool').innerText = rewardPool.toLocaleString() + " ALGO";
+    document.getElementById('rewardPoolStatus').innerHTML = rewardPool.toLocaleString() + " ALGO";
+  };
+  setInterval(updateFeed, 4100);
+  for(let i=0;i<6;i++) updateFeed();
+
+  // Wallet simulation & connection
+  let walletConnected = false;
+  let walletAddr = "";
+  let walletBalance = 0;
+  const walletConnectBtn = document.getElementById('walletConnectBtn');
+  const heroConnectBtn = document.getElementById('heroConnectBtn');
+  const walletStatusText = document.getElementById('walletStatusText');
+  const walletAddressDisplay = document.getElementById('walletAddressDisplay');
+  const walletBalanceValue = document.getElementById('walletBalanceValue');
+  function connectWalletHandler() {
+    if(!walletConnected) {
+      walletConnected = true;
+      walletAddr = "ALGO" + Math.random().toString(36).substring(2, 12).toUpperCase();
+      walletBalance = Math.floor(Math.random() * 480) + 75;
+      walletStatusText.innerHTML = '<i class="fas fa-check-circle text-green-400"></i> Connected (Pera/Defly)';
+      walletAddressDisplay.innerText = walletAddr;
+      walletBalanceValue.innerText = walletBalance.toFixed(2) + " ALGO";
+      activeParticipants += Math.floor(Math.random() * 6);
+      document.getElementById('activeParticipantsCount').innerText = activeParticipants;
+      document.getElementById('topParticipant').innerText = formatAddress(walletAddr);
+      alert(`✅ Wallet connected: ${walletAddr.substring(0,8)}...\nRewards eligible!`);
+    } else alert("Wallet already connected");
+  }
+  walletConnectBtn.addEventListener('click', connectWalletHandler);
+  heroConnectBtn.addEventListener('click', connectWalletHandler);
+  document.getElementById('heroEarnBtn').addEventListener('click', () => { alert("🚀 Start earning by connecting wallet and monitoring live transactions! Daily rewards active."); });
+
+  // update counters random increments
+  setInterval(() => {
+    if(walletConnected && Math.random() > 0.7) {
+      let rewardGain = (Math.random() * 3 + 0.5).toFixed(2);
+      walletBalance += parseFloat(rewardGain);
+      totalRewards += parseFloat(rewardGain);
+      rewardPool -= parseFloat(rewardGain);
+      if(rewardPool<0) rewardPool=50000;
+      walletBalanceValue.innerText = walletBalance.toFixed(2) + " ALGO";
+      document.getElementById('totalRewardsCount').innerText = totalRewards.toFixed(0) + " ALGO";
+      document.getElementById('recentClaims').innerText = Math.floor(parseInt(document.getElementById('recentClaims').innerText) + 1);
+      document.getElementById('statRewardPool').innerText = rewardPool.toFixed(0) + " ALGO";
+      document.getElementById('rewardPoolStatus').innerHTML = rewardPool.toFixed(0) + " ALGO";
+    }
+    let score = Math.floor(Math.random() * 12 + 88);
+    document.getElementById('networkScore').innerHTML = score + "<span class='text-base'>/100</span>";
+    document.getElementById('activeParticipantsCount').innerText = (activeParticipants + Math.floor(Math.random() * 3)).toLocaleString();
+  }, 5800);
+
+  // Chart.js
+  const ctx = document.getElementById('activityChart').getContext('2d');
+  new Chart(ctx, { type: 'line', data: { labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], datasets: [{ label: 'Tx Volume (k)', data: [12, 18, 15, 22, 28, 34, 41], borderColor: '#00D4FF', backgroundColor: 'rgba(0,212,255,0.1)', tension: 0.3, fill: true }] }, options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { labels: { color: '#ccc' } } }, scales: { y: { grid: { color: '#1e293b' } }, x: { ticks: { color: '#aaa' } } } } });
+
+  // FAQ Accordion
+  const faqItems = document.querySelectorAll('.faq-item');
+  faqItems.forEach(item => { const q = item.querySelector('.faq-question'); q.addEventListener('click', () => { const active = item.classList.contains('active'); faqItems.forEach(i => i.classList.remove('active')); if(!active) item.classList.add('active'); }); });
+  if(faqItems.length) faqItems[0].classList.add('active');
+</script>
+</body>
+</html>

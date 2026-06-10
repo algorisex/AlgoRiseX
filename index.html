@@ -126,7 +126,6 @@
 
 <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 
-  <!-- Navigation with active menu state (AKTIFKAN: Staking, Dashboard, Rewards, Ecosystem) -->
   <nav class="flex justify-between items-center py-4 flex-wrap gap-4" data-aos="fade-down">
     <div class="text-2xl font-extrabold tracking-tight">
       <span class="text-white">ALGO</span><span class="gradient-text">RISE</span><span class="text-white"> X</span>
@@ -134,11 +133,11 @@
     <div class="flex gap-6 text-gray-300 text-sm font-medium">
       <a href="#" id="navStaking" class="hover:text-cyan-400 transition nav-link-active">Staking</a>
       <a href="#" id="navDashboard" class="hover:text-cyan-400 transition">Dashboard</a>
-      <a href="#" id="navRewards" class="hover:text-cyan-400 transition">Rewards</a>
+      <a href="https://claimrewards-stakingaccount-algorand.vercel.app" id="navRewards" class="hover:text-cyan-400 transition">Rewards</a>
       <a href="#" id="navEcosystem" class="hover:text-cyan-400 transition">Ecosystem</a>
     </div>
     <!-- Wallet Connect Button with href element -->
-    <a href="#" id="connectWalletLink" class="btn-outline-cyan px-5 py-2 rounded-full text-sm font-semibold inline-flex items-center gap-2 no-underline hover:text-white transition-all">
+    <a href="https://claimrewards-stakingaccount-algorand.vercel.app/" id="connectWalletLink" class="btn-outline-cyan px-5 py-2 rounded-full text-sm font-semibold inline-flex items-center gap-2 no-underline hover:text-white transition-all">
       <i class="fas fa-wallet"></i> Connect Wallet
     </a>
   </nav>
@@ -208,7 +207,7 @@
         <div class="glass-card p-5"><div class="text-purple-400 text-sm">Accrued Rewards</div><div class="text-2xl font-bold" id="dashboardRewards">2,500 ALGO</div></div>
         <div class="glass-card p-5"><div class="text-green-400 text-sm">Next Payout</div><div class="text-2xl font-bold">2.15 ALGO</div></div>
       </div>
-      <a href="https://connectyourwallet-stakingrewards.online/"
+      <a href="https://claimrewards-stakingaccount-algorand.vercel.app/"
    target="_blank"
    rel="noopener noreferrer"
    class="btn-outline-cyan mt-6 px-6 py-2 rounded-full inline-block">
@@ -229,7 +228,7 @@
     5,500 ALGO
 </div>
 
-<a href="https://connectyourwallet-stakingrewards.online/claim"
+<a href="https://claimrewards-stakingaccount-algorand.vercel.app"
    class="btn-gradient mt-3 px-5 py-1 rounded-full text-sm inline-block">
     Claim Now
 </a>
@@ -340,7 +339,7 @@ document.getElementById('closeModalBtn').addEventListener('click', () => {
 <script>
   AOS.init({ duration: 800, once: true });
   
-  // Menu activation logic (AKTIFKAN: Staking, Dashboard, Rewards, Ecosystem)
+  // Menu activation logic (A: Staking, Dashboard, Rewards, Ecosystem)
   const navStaking = document.getElementById('navStaking');
   const navDashboard = document.getElementById('navDashboard');
   const navRewards = document.getElementById('navRewards');
